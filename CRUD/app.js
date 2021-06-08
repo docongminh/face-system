@@ -3,14 +3,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const logger = require('morgan');
-const create = require('./server/routes/create');
 
 // set up dependencies
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));
-app.use('/api/', create);
+app.use('/api', require('./server/routes/create_router'));
 
 // setup mongoose
 const url = 'mongodb+srv://cristian:minhquan123@cluster0.zuxzb.mongodb.net/courses?retryWrites=true&w=majority';
