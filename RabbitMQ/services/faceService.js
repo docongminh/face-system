@@ -3,11 +3,9 @@
 const rabbitmqService = require('./rabbitmqService');
 const config = require('../config');
 class FaceService{
-  constructor(){
-    this.face_model = face_model;
-  }
+  constructor(){}
 
-  async create(req, faceObj, {callback = undefined} = {}){
+  async create(res, faceObj, {callback = undefined} = {}){
 
       faceObj['res'] = res;
       const image = faceObj.image;
@@ -87,3 +85,5 @@ class FaceService{
     res.send(responseUtils.toResponse({ ...member.toObject(), imageResults }, contants.messageResponse.CREATE_SUCESS));
 }
 }
+
+module.exports = new FaceService();

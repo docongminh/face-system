@@ -13,15 +13,20 @@ class extractService{
       const id = `create-embedding-${new Date().getTime()}`;
       //
       for (let i=0; i<images.length; i++){
+          // get image base64
           const image = images[i];
           const imageId = `${id}-${i}`;
           const imageIds = {};
           imageIds[imageId] = { result: 0, index: i };
-          const dataFace = { ...req.body.image, id, imageId, image, action: 'extract'};
+          const dataFace = { ...req.body, id, imageId, image, action: 'extract'};
           facesStorage.push(dataFace);
       }
-      for (faceObj of facesStorage){
+      console.log(facesStorage);
+      for (const faceObj of facesStorage){
+          console.log("face Obj: ", faceObj);
           faceService.create(res, faceObj);
       }
     }
 }
+
+module.exports = new extractService();
