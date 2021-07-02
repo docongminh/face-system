@@ -1,7 +1,8 @@
 
 // RabbitMQ config
 const rabbitMqConfig = {
-    RABBIT_MQ_URI: 'amqp://guest:guest@localhost:5672',
+    RABBIT_MQ_URI: 'amqp://guest:guest@localhost:5672', 
+    // RABBIT_MQ_URI: 'amqp://minhdc:123456@localhost:5672',
     // QUEUE_DETECT: 'Q_DETECT',
     // QUEUE_CREATE_RES: 'Q_REGISTER_RES',
     QUEUE_RES: 'Q_RES',

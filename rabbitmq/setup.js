@@ -53,9 +53,7 @@ async function listenResult(conn) {
             console.log('rabbitMQ create channel error', err);
             return;
         }
-        channel.assertQueue(config.rabbitMqConfig.QUEUE_RES, {
-            durable: true
-        });
+        channel.assertQueue(config.rabbitMqConfig.QUEUE_RES, { durable: true });
         console.log("Begin listen queue " + config.rabbitMqConfig.QUEUE_RES);
 
         channel.prefetch(1);
