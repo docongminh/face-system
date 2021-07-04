@@ -29,11 +29,16 @@ function createChannel(queue) {
 }
 
 async function send(q, data, { callback = undefined, params = {} }) {
+    /**
+     * @param {string} q name of queu will be receive message from producer
+     * @param {object} data contain image and name of response queue
+     */
     if (!connection) {
         connection = await connectMQ();
     }
     const date = new Date();
     data.clientId = `extract-${date.getTime()}-${Math.round(Math.random() * date.getTime())}-${Math.round(Math.random() * date.getTime())}`;
+    // save callback response func and its params
     restores[data.clientId] = { callback, params };
     const channel = queueStores[q];
     if (channel) {
