@@ -5,7 +5,8 @@ const EmbbedScheme = new mongoose.Schema({
         // _id: {type: ObjectId, atuo: true},
         embedding: {type: Array},
         embedding_size: {type: Number},
-        model_name: {type: String, required: true}
+        detect_model: {type: String, required: true},
+        identity_model: {type: String, required: true}
     }
 );
 

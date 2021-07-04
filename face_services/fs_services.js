@@ -7,24 +7,31 @@ class FaceService{
     constructor(){
     }
 
-    async create(res, faceObj, {callback = undefined} = {}){
+    async create(res, message, {callback = undefined} = {}){
+        /**
+         * Send message to queue
+         */
 
-        faceObj['res'] = res;
-        const image = faceObj.image;
-        delete faceObj.image;
+        message['res'] = res;
+        const image = message.image;
+        delete message.image;
         rabbitMq.send(config.rabbitMqConfig.QUEUE_EXTRACT_FEATURE,
             { image, queue: config.rabbitMqConfig.QUEUE_RES },
-            { callback: callback || this.callbackResponse, params: {...faceObj} });
+            { callback: callback || this.callbackResponse, params: {...message} });
     }
     
     async callbackResponse(params, content){
+        // console.log(params);
         const res = params.res;
         const embeddings = content.features;
         const embedding_size = content.features[0].length;
         const status = content.code;
-        const model_name = params.model_name;
+        const detect_model = params.detect_model;
+        const identity_model = params.identify_model;
+        console.log(`${detect_model}, ${identity_model}`);
         const obj = {
-            model_name,
+            detect_model,
+            identity_model,
             status,
             embedding_size,
             embeddings
@@ -33,46 +40,6 @@ class FaceService{
         res.send(obj);
 
     }
-    //
-    async callbackCreate(params, content) {
-       
-        const res = params.res;
-        const imageId = params.imageId;
-        const id = params.id;
-        if (!content) {
-            return await FaceService.createFaceCallback(id, imageId, { error: contants.errors.SERVER_ERR, action: params.action });
-        }
-        delete content.clientId;
-
-        if (content.code !== 200) {
-            return await FaceService.createFaceCallback(id, imageId, { error: content, action: params.action });
-        }
-
-        try {
-            return await FaceService.createFaceCallback(id, imageId, { action: params.action });
-        } catch (error) {
-            console.log(error);
-            return await FaceService.createFaceCallback(id, imageId, { error, action: params.action });
-        }
-    }s
-
-    async createFaceCallback(id, imageId, data) {
-        
-        const imageResults = [];
-        let numberFail = 0;
-        for (const mid in memberData.imageIds) {
-            if (memberData.imageIds[mid].result === 0) {
-                return;
-            }
-            if (memberData.imageIds[mid].result.code != 200) {
-                numberFail += 1;
-            }
-            imageResults[memberData.imageIds[mid].index] = memberData.imageIds[mid].result;
-        }
-        // delete faceService.memberStores[memberId];
-        const res = memberData.res;
-        res.send(responseUtils.toResponse({ ...member.toObject(), imageResults }, contants.messageResponse.CREATE_SUCESS));
-}
 }
 
 module.exports = new FaceService();

@@ -4,23 +4,30 @@ class ExtractService{
     constructor(){}
 
     async create(req, res){
+        /**
+         * Create message(image, infor about request)
+         */
+        // list image
       const images = req.body.image || [];
-      const model_name = req.body.model_name;
+      // name of detect model
+      const detect_model = req.body.detect_model;
+      // name of identify model
+      const identify_model = req.body.identify_model;
+      // free space
       delete req.body.image;
-      const facesStorage = [];
+      // storage messages 
+      const messages = [];
       const id = `create-embedding-${new Date().getTime()}`;
       //
       for (let i=0; i<images.length; i++){
           // get image base64
           const image = images[i];
           const imageId = `${id}-${i}`;
-          const imageIds = {};
-          imageIds[imageId] = { result: 0, index: i };
-          const dataFace = { id, imageId, model_name, image, action: 'extract'};
-          facesStorage.push(dataFace);
+          const message = { id, imageId, detect_model, identify_model, image, action: 'extact'};
+          messages.push(message);
       }
-      for (const faceObj of facesStorage){
-          faceService.create(res, faceObj);
+      for (const mess of messages){
+          faceService.create(res, mess);
       }
     }
 }
