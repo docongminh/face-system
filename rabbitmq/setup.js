@@ -28,9 +28,10 @@ function createChannel(queue) {
     });
 }
 
+
 async function send(q, data, { callback = undefined, params = {} }) {
     /**
-     * @param {string} q name of queu will be receive message from producer
+     * @param {string} q name of queue will be receive message from producer
      * @param {object} data contain image and name of response queue
      */
     if (!connection) {
