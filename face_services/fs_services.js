@@ -1,5 +1,6 @@
 // face service
 const rabbitMq = require('../rabbitmq/setup');
+const directExchange = require('../rabbitmq/publisher');
 const config = require('../config');
 const face_model = require('./fs_face_model');
 
@@ -7,7 +8,7 @@ class FaceService{
     constructor(){
     }
 
-    async create(res, message, {callback = undefined} = {}){
+    async create(res, message){
         /**
          * Send message to queue
          */
@@ -15,16 +16,14 @@ class FaceService{
         message['res'] = res;
         const image = message.image;
         delete message.image;
-        rabbitMq.send(config.rabbitMqConfig.QUEUE_EXTRACT_FEATURE,
-            { image, queue: config.rabbitMqConfig.QUEUE_RES },
-            { callback: callback || this.callbackResponse, params: {...message} });
+        directExchange.send({image})
     }
     
     async callbackResponse(params, content){
         // console.log(params);
         const res = params.res;
         const embeddings = content.features;
-        const embedding_size = content.features[0].length;
+        const embedding_size = content.features;
         const status = content.code;
         const detect_model = params.detect_model;
         const identity_model = params.identify_model;
