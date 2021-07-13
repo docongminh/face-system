@@ -1,29 +1,59 @@
 const amqp = require('amqplib');
-const exchangeName = "face";
-const exchangeType = 'direct';
-const config = require('../config');
-const {connectMQ, createChannel} = require('./utils');
+const config = require('./config');
+const setup = require('./setup');
 const tempStorage = {};
 
-async function send(connection, exchange, key, message, {callback = undefined ,  params = {} }){
+async function send(message){
     /**
      * TODO LATER
      */
-    tempStorage[key] = {callback, params};
-    const channel = createChannel(connection);
-    channel.assertExchange(exchange, 'direct',{
-        durable: true
+    const connection = await setup.connectMQ('amqp://guest:guest@localhost:5672');
+    const channel = await setup.createChannel(connection);
+    channel.assertExchange(config.broker.exchange_name, config.broker.exchange_type, {
+        durable: false
     });
-    channel.publish(exchange, key, new Buffer.from(message))
-    console.log(" [x] Sending %s: '%s'", key, message);
-    setTimeout(
-        console.log("Error publish message to Queue...!"),
-        5000
-    );
+    const sent = channel.publish(config.broker.exchange_name,
+                            config.routing_keys.detect_key,
+                            Buffer.from(JSON.stringify(message)));
+    if(sent){
+        console.log("Sent message to '%s' ", config.broker.detect_queue);
+        return
+    }
+    throw new Error(`Fail sending message to "${config.broker.detect_queue}" queue, "${JSON.stringify(message)}"`)
 }
 
 async function listenResponse(connection){
-    const channel = createChannel(connection);
-    channel.assertQueue()
+    /**
+     * 
+     */
+    const channel = await setup.createChannel(connection);
+    channel.assertExchange(config.broker.exchange_name, config.broker.exchange_type, {
+        durable: false
+    });
+    channel.assertQueue(config.broker.response_queue);
+    channel.bindQueue(config.broker.response_queue, config.broker.exchange_name, config.routing_keys.response_key);
+    channel.consume(config.broker.response_queue, function(msg){
+        console.log("Consume this message: '%s'", msg.content);  
+    }, {
+        noAck: false
+    });
 }
 
+async function run(){
+    try{
+        const connection = await setup.connectMQ('amqp://guest:guest@localhost:5672');
+        listenResponse(connection);
+        console.log(`Listening ${config.broker.response_queue}`);
+    } catch(error){
+        console.log("Error run: ", error);
+        setTimeout(function(){
+            run()
+        }, 5000);
+        return
+    }
+}
+
+module.exports = {
+    run,
+    send,
+}
