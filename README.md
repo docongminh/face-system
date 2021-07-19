@@ -1,7 +1,19 @@
 # Face Recognition Service
 
-# Flow basic (will be visualize by image
-  - 
+# Temporary Flow
+![FLOW](https://github.com/docongminh/face-recognition-microservice/blob/master/images/flow_temp.svg)
+
+# START
+Each one service below have to run on single terminal
+  * Start Rabbit MQ management: 
+       `~ docker-compose -f docker-compose-rabbit.yml up`
+  * Run server Node
+      * init install dependency nodejs: 
+          `~ npm i`
+      * start server: 
+          `~ npm start`
+  * Run Consumer: 
+      `~ bash consumer.sh`
 # HAVE TO DO LIST
   - [x] API Gateway
   - [x] Detect consumer
