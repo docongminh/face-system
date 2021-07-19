@@ -1,7 +1,8 @@
 # Face Recognition Service
 
-# Flow basic (will be visualize by image
-  - 
+# Temporary Flow
+![FLOW](https://github.com/docongminh/face-recognition-microservice/blob/master/images/flow_temp.svg)
+ 
 # HAVE TO DO LIST
   - [x] API Gateway
   - [x] Detect consumer
