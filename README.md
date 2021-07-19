@@ -14,10 +14,10 @@ Each one service below have to run on single terminal
           `~ npm start`
   * Run Consumer: 
       `~ bash consumer.sh`
-# HAVE TO DO LIST
+# MUSTDO
   - [x] API Gateway
   - [x] Detect consumer
-  - [ ] Extract feature consumer
+  - [ ] Extract feature consumer test & integrate
   - [ ] Search Embeding consumer(milvus)
   - [ ] README project
 
