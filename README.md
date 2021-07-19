@@ -1,4 +1,5 @@
 # Face Recognition Service
+This is my project when i start learn nodejs and javascript in 3 weeks. So, Coding convention very bad.
 
 # Temporary Flow
 ![FLOW](https://github.com/docongminh/face-recognition-microservice/blob/master/images/flow_temp.svg)
