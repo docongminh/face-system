@@ -1,0 +1,3 @@
+[submodule "consumers-face-service"]
+	path = consumers-face-service
+	url = https://github.com/docongminh/consumers-face-service
