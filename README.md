@@ -14,10 +14,10 @@ Each one service below have to run on single terminal
           `~ npm start`
   * Run Consumer: 
       `~ bash consumer.sh`
-# HAVE TO DO LIST
+# MUSTDO
   - [x] API Gateway
   - [x] Detect consumer
-  - [ ] Extract feature consumer
+  - [ ] Extract feature consumer test & integrate
   - [ ] Search Embeding consumer(milvus)
   - [ ] README project
 
@@ -25,6 +25,7 @@ Each one service below have to run on single terminal
   - [ ] Build consumer by ncnn(C++)
   - [ ] Build Extract Feature by ncnn(C++)
   - [ ] [Try Protocol Buffer](https://developers.google.com/protocol-buffers) instead of JSON
+  - [ ] [Try ZMQ](https://zeromq.org/)
   - [ ] Try Kubernetes
 
 # References
