@@ -9,10 +9,10 @@ const admin = {
 const broker = {
   exchange_name: "face_service",
   exchange_type: "direct",
-  detect_queue: "Q_DETECTION",
-  extract_queue: "Q_EXTRACT",
-  match_face_queue: "Q_MATCHING",
-  response_queue: "Q_RESPONSE"
+  detect_queue: "DETECTION",
+  match_face_queue: "MATCHING",
+  response_queue: "RESPONSE",
+  durable: false //https://github.com/MassTransit/MassTransit/issues/370
 }
 const routing_keys = {
   detect_key: "detect",

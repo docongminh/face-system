@@ -16,27 +16,33 @@ class FaceService{
         message['res'] = res;
         const image = message.image;
         delete message.image;
-        directExchange.send({image})
+        directExchange.send({image}, {callback: this.callbackResponse, params: {...message}})
     }
     
     async callbackResponse(params, content){
         // console.log(params);
         const res = params.res;
-        const embeddings = content.features;
-        const embedding_size = content.features;
-        const status = content.code;
-        const detect_model = params.detect_model;
-        const identity_model = params.identify_model;
-        console.log(`${detect_model}, ${identity_model}`);
+        const data = content.data;
+        const extract_time = content.extract_time;
+        const detect_time = content.detect_time;
+        // const detect_model = params.detect_model;
+        // const identity_model = params.identify_model;
+        // console.log(`${detect_model}, ${identity_model}`);
         const obj = {
-            detect_model,
-            identity_model,
-            status,
-            embedding_size,
-            embeddings
+            extract_time,
+            detect_time,
+            data
+        }
+        const response = {
+            code: 200,
+            detect_time: detect_time,
+            extract_time: extract_time,
+            data: data
         }
         face_model.create(obj);
-        res.send(obj);
+        // sent message to client
+        console.log(response)
+        res.send(response);
 
     }
 }

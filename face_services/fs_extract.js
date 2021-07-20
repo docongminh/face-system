@@ -10,9 +10,9 @@ class ExtractService{
         // list image
       const images = req.body.image || [];
       // name of detect model
-      const detect_model = req.body.detect_model;
-      // name of identify model
-      const identify_model = req.body.identify_model;
+    //   const detect_model = req.body.detect_model;
+    //   // name of identify model
+    //   const identify_model = req.body.identify_model;
       // free space
       delete req.body.image;
       // storage messages 
@@ -23,7 +23,7 @@ class ExtractService{
           // get image base64
           const image = images[i];
           const imageId = `${id}-${i}`;
-          const message = { id, imageId, detect_model, identify_model, image, action: 'extact'};
+          const message = { id, image};
           messages.push(message);
       }
       for (const mess of messages){
