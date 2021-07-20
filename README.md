@@ -7,6 +7,8 @@
 Each one service below have to run on single terminal
   * Start Rabbit MQ management: 
        `~ docker-compose -f docker-compose-rabbit.yml up`
+       - user & password default: `guest` & `guest`
+       - If your IP is Dynamic IP. You have to check and reconfig rabbitmq host in [here](https://github.com/docongminh/consumers-face-service/blob/master/rabbitmq/config.py#L2)
   * Run server Node
       * init install dependency nodejs: 
           `~ npm i`
@@ -14,10 +16,36 @@ Each one service below have to run on single terminal
           `~ npm start`
   * Run Consumer: 
       `~ bash consumer.sh`
+# TEST POSTMAN
+ - API: localhost:5000/api/v1/face
+ ```json
+    {
+        "image": ["list base64 image"]
+    }
+ ```
+ - OUPUT EXAMPLE:
+ ```json
+    {
+        "code": 200,
+        "detect_time": 0.07,
+        "extract_time": 0.01,
+        "data": {
+            "0": {
+                "embbeding": [],
+                "bbox": []
+            },
+            "1": {
+                "embbeding": [],
+                "bbox": []
+            }
+            
+        }
+    }
+ ```
 # MUSTDO
   - [x] API Gateway
   - [x] Detect consumer
-  - [ ] Extract feature consumer test & integrate
+  - [x] Extract feature consumer test & integrate
   - [ ] Search Embeding consumer(milvus)
   - [ ] README project
 
