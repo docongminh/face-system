@@ -28,12 +28,8 @@ class FaceService{
     }
 
     async createCallback(params, content){
-        console.log("content: ", content)
         const {res, name} = params;
         const {detect_time, extract_time, index, total_entities} = content;
-        console.log("name: ", name)
-        console.log("index: ", index)
-        console.log("Time detect: ", detect_time)
         const obj = {name, index};
         face_model.create(obj);
         const response = {
