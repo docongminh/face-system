@@ -8,7 +8,7 @@ router.post('/', function(req, res) {
 
 // get all embedding
 router.get('/', (req, res) => {
-    return fsController.getAll(req, res);
+    return fsController.search(req, res);
 });
 
 module.exports = router;

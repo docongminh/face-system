@@ -1,50 +1,25 @@
-// face service
-const rabbitMq = require('../rabbitmq/setup');
-const directExchange = require('../rabbitmq/publisher');
-const config = require('../config');
-const face_model = require('./fs_face_model');
+const faceService = require('./fs_rabbitmq_service');
 
-class FaceService{
-    constructor(){
-    }
+class ExtractService{
+    constructor(){}
 
-    async create(res, message){
+    async create(req, res){
         /**
-         * Send message to queue
+         * Create message(image, infor about request)
          */
-
-        message['res'] = res;
-        const image = message.image;
-        delete message.image;
-        directExchange.send({image}, {callback: this.callbackResponse, params: {...message}})
+      const image = req.body.image;
+      const name = req.body.name;
+      // free space
+      delete req.body.image;
+      const message = {name, image};
+      faceService.create(res, message);
     }
-    
-    async callbackResponse(params, content){
-        // console.log(params);
-        const res = params.res;
-        const data = content.data;
-        const extract_time = content.extract_time;
-        const detect_time = content.detect_time;
-        // const detect_model = params.detect_model;
-        // const identity_model = params.identify_model;
-        // console.log(`${detect_model}, ${identity_model}`);
-        const obj = {
-            extract_time,
-            detect_time,
-            data
-        }
-        const response = {
-            code: 200,
-            detect_time: detect_time,
-            extract_time: extract_time,
-            data: data
-        }
-        face_model.create(obj);
-        // sent message to client
-        console.log(response)
-        res.send(response);
 
+    async search(req, res){
+        const image = req.body.image;
+        const message = {image};
+        faceService.create(res, message);
     }
 }
 
-module.exports = new FaceService();
+module.exports = new ExtractService();
