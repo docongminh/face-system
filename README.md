@@ -5,21 +5,21 @@
 
 # START
 Each one service below have to run on single terminal
-  * Start Rabbit MQ management: 
-       `~ docker-compose -f docker-compose-rabbit.yml up`
-       - user & password default: `guest` & `guest`
-       - If your IP is Dynamic IP. You have to check and reconfig rabbitmq host in [here](https://github.com/docongminh/consumers-face-service/blob/master/rabbitmq/config.py#L2)
+  * Run Consumer:
+      In this consumer contains: detect, extract, search/insert and all milvus service
+      `~ bash consumer.sh`
   * Run server Node
       * init install dependency nodejs: 
           `~ npm i`
-      * start server: 
+      * start server:
+         befor start service make sure that your rabbitmq correctly. If your IP is Dynamic IP. You have to check and reconfig rabbitmq host in [here](https://github.com/docongminh/consumers-face-service/blob/master/rabbitmq/config.py#L2)
           `~ npm start`
-  * Run Consumer: 
-      `~ bash consumer.sh`
+  
 # TEST POSTMAN
- - API: localhost:5000/api/v1/face
+ - API: localhost:5000/api/v1/insert
  ```json
     {
+        "name": "name indentity",
         "image": ["list base64 image"]
     }
  ```
@@ -27,25 +27,20 @@ Each one service below have to run on single terminal
  ```json
     {
         "code": 200,
-        "detect_time": 0.07,
-        "extract_time": 0.01,
-        "data": {
-            "0": {
-                "embbeding": [],
-                "bbox": []
-            },
-            "1": {
-                "embbeding": [],
-                "bbox": []
-            }
-            
-        }
+        "time_detect": 0.5722126960754395,
+        "time_extract": 0.14391565322875977,
+        "entities": 2,
+        "message": "Create successful !"
     }
  ```
+ # Milvus Insight
+     host: http://127.0.0.1:8000
+     account: ip_address:19530
 # MUSTDO
   - [x] API Gateway
   - [x] Detect consumer
   - [x] Extract feature consumer test & integrate
+  - [x] Insert Embeding consumer(milvus)
   - [ ] Search Embeding consumer(milvus)
   - [ ] README project
 
